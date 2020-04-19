@@ -26,6 +26,7 @@ class Deck:
 
     def reset(self):
         self.curr_deck = deepcopy(self.base_deck)
+        self.discards = []
 
     def list_discards(self):
         return str(list(map(lambda x: x.name, self.discards)))
