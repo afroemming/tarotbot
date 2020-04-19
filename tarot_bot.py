@@ -1,16 +1,16 @@
 import cards
 
 import discord
-import configparser
 
 client = discord.Client()
 
 deck = cards.Deck(cards.tarot_deck)
 
-#Import discord token from config.ini
-config = configparser.ConfigParser()
-config.read('config.ini')
-token = config['main']['token']
+#Import discord token from '.token'
+f = open('.token', 'r')
+token = f.read()
+print(f'Using token "{token}"')
+
 
 
 @client.event
@@ -40,5 +40,4 @@ async def on_message(message):
         await message.channel.send('All cards are back in the deck.')
         
 
-print(token)
-#client.run(token)
+client.run(token)
