@@ -38,6 +38,18 @@ async def on_message(message):
     if message.content.startswith('$reset'):
         deck.reset()
         await message.channel.send('All cards are back in the deck.')
-        
+
+    if message.content.startswith('$list_discards'):
+        await message.channel.send(deck.list_discards())
+
+    if message.content.startswith('$return'):
+        try: 
+            n = int(message.content.split()[1])
+            deck.return_card(n)
+            await message.channel.send("Card returned!")
+        except:
+            print(sys.exc_info()[0])
+            await message.channel.send("Error returning card")
+
 
 client.run(token)

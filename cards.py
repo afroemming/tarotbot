@@ -10,6 +10,7 @@ class Deck:
     def __init__(self, cards):
         self.base_deck = deepcopy(cards)
         self.curr_deck = deepcopy(cards)
+        self.discards = []
 
     def __len__(self):
         return len(self.base_deck)
@@ -20,10 +21,17 @@ class Deck:
     def draw(self):
         self.drawn = choice(self.curr_deck)
         self.curr_deck.remove(self.drawn)
+        self.discards.append(self.drawn)
         return self.drawn
 
     def reset(self):
         self.curr_deck = deepcopy(self.base_deck)
+
+    def list_discards(self):
+        return str(list(map(lambda x: x.name, self.discards)))
+
+    def return_card(self, n):
+        self.curr_deck.append(self.discards.pop(n))
 
 
 tarot_deck = [Card('the Ace of Cups', 'Cups01.jpg'),   
