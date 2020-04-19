@@ -28,7 +28,7 @@ async def on_message(message):
     if message.content.startswith('$draw'):
         try:
             drawn_card = deck.draw()
-            await message.channel.send(f'You drew {drawn_card.name}.')
+            await message.channel.send(f'You drew {drawn_card.name}.', file=discord.File(f'img/{drawn_card.img_name}'))
         except IndexError:
             await message.channel.send('Deck is out of cards!')
 
