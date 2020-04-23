@@ -76,6 +76,8 @@ async def return_card(ctx, n: int):
 async def return_card_error(ctx, error):
     if isinstance(error, (commands.errors.BadArgument)):
         await ctx.send("Error parsing argument! Did you supply an int?")
+    elif isinstance(error, (commands.errors.MissingRequiredArgument)):
+        await ctx.send("Error: missing argument n!")
     else:
         raise error
 
