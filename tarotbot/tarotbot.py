@@ -59,15 +59,18 @@ async def list_discards(ctx):
 
 
 @bot.command()
-async def return_card(ctx, n: int, error):
+async def return_card(ctx, n: int):
     """
     Returns a card in the discard deck to the main deck, so that it may be drawn again.
 
     Parameters:
         n (int): Position of the card, as in `$list_discards`, to return (note: zero-indexed). 
     """
-    deck.return_card(n)
-    await ctx.send("Card returned!")
+    try:
+        deck.return_card(n)
+        await ctx.send("Card returned!")
+    except IndexError:
+        await ctx.send("Error: Invalid index!")
 
 @return_card.error
 async def return_card_error(ctx, error):
