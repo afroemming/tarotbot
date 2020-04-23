@@ -1,1 +1,0 @@
-Tarot card images from https://en.wikipedia.org/wiki/Rider-Waite_tarot_deck
