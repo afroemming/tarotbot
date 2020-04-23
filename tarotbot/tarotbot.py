@@ -49,7 +49,24 @@ async def on_message(message):
             await message.channel.send("Card returned!")
         except:
             print(sys.exc_info()[0])
-            await message.channel.send("Error returning card")
+            await message.channel.send("Error returning card.")
+
+    if message.content.startswith('$help'): 
+        await message.channel.send(
+            """
+
+            tarotbot: A simple Discord bot for drawing cards from a tarot deck.
+
+            The following commands are supported:
+            * `$draw` - Draw a single card from the deck, without replacement.
+            * `$reset` - Reset the deck, replacing all cards and clearing discards.
+            * `$remaining` - Print the number of cards left in the deck.
+            * `$list_discards` - Lists the names of every card in the discard deck.
+            * `$return {n}` - Return the {n}th card in the discard deck to the main deck, so that it may be drawn again.
+                Note that {n} refers to the position of the card as in `$list_discards` and that it is zero indexed. 
+            * `$help` - print this help message.
+            """
+        )
 
 
 client.run(token)
