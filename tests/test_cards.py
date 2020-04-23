@@ -1,7 +1,8 @@
-import cards
-import pytest
-
 from copy import deepcopy
+
+import tarotbot.cards as cards
+
+import pytest
 
 def test_deck_draw_returns_card():
     assert type(deepcopy(cards.Deck(cards.tarot_deck)).draw()) == cards.Card
