@@ -57,13 +57,23 @@ async def list_discards(ctx):
     """Lists the names of every card in the discard deck."""
     await ctx.send(deck.list_discards())
 
+
 @bot.command()
-async def return_card(ctx, n: int):
+async def return_card(ctx, n: int, error):
     """
-    Return the {n}th card in the discard deck to the main deck, so that it may be drawn again.
-    Note that {n} refers to the position of the card as in `$list_discards` and that it is zero indexed. 
+    Returns a card in the discard deck to the main deck, so that it may be drawn again.
+
+    Parameters:
+        n (int): Position of the card, as in `$list_discards`, to return (note: zero-indexed). 
     """
     deck.return_card(n)
     await ctx.send("Card returned!")
+
+@return_card.error
+async def return_card_error(ctx, error):
+    if isinstance(error, (commands.errors.BadArgument)):
+        await ctx.send("Error parsing argument! Did you supply an int?")
+    else:
+        raise error
 
 bot.run(token)
