@@ -12,7 +12,7 @@ To start this bot, place a file named '.token' in the main program directory con
 * `$reset` - Reset the deck, replacing all cards and clearing discards.
 * `$remaining` - Print the number of cards left in the deck.
 * `$list_discards` - Lists the names of every card in the discard deck.
-* `$return {n}` - Return the {n}th card in the discard deck to the main deck, so that it may be drawn again.
+* `$return_card {n}` - Return the {n}th card in the discard deck to the main deck, so that it may be drawn again.
     Note that {n} refers to the position of the card as in `$list_discards` and that it is zero indexed. 
 * `$help` - print a help message to Discord.
 
