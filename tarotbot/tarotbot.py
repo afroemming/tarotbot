@@ -4,8 +4,9 @@ from sys import path
 import cards
 
 import discord
+from discord.ext import commands
 
-client = discord.Client()
+bot = commands.Bot(command_prefix='$')
 
 deck = cards.Deck(cards.tarot_deck)
 
@@ -17,63 +18,52 @@ print(f'Using token "{token}"')
 
 
 
-@client.event
+@bot.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
-
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
-
-    if message.content.startswith('$draw'):
-        try:
-            drawn_card = deck.draw()
-            await message.channel.send(f'You drew {drawn_card.name}.', file=discord.File(f'img/{drawn_card.img_name}'))
-        except IndexError:
-            await message.channel.send('Deck is out of cards!')
-        except FileNotFoundError:
-            await message.channel.send(f'You drew {drawn_card.name}, but I wasn\'t able to load and image!')
+    print('Logged in as')
+    print(bot.user.name)
+    print(bot.user.id)
+    print('--------------')
 
 
-    if message.content.startswith('$remains'):
-        await message.channel.send(f'There are {len(deck)} cards remaining.')
-    
-    if message.content.startswith('$reset'):
-        deck.reset()
-        await message.channel.send('All cards are back in the deck.')
+@bot.command()
+async def hello(ctx):
+    await ctx.send('Hello!')
 
-    if message.content.startswith('$list_discards'):
-        await message.channel.send(deck.list_discards())
+@bot.command()
+async def draw(ctx):
+    """Draw a single card from the deck, without replacement."""
+    try:
+        drawn_card = deck.draw()
+        await ctx.send(f'You drew {drawn_card.name}.', file=discord.File(f'img/{drawn_card.img_name}'))
+    except IndexError:
+        await ctx.send('Deck is out of cards!')
+    except FileNotFoundError:
+        await ctx.send(f'You drew {drawn_card.name}, but I wasn\'t able to load an image!')
 
-    if message.content.startswith('$return'):
-        try: 
-            n = int(message.content.split()[1])
-            deck.return_card(n)
-            await message.channel.send("Card returned!")
-        except:
-            print(sys.exc_info()[0])
-            await message.channel.send("Error returning card.")
+@bot.command()
+async def remains(ctx):
+    """Print the number of cards left in the deck."""
+    await ctx.send(f'There are {deck.remaining()} cards remaining.')
 
-    if message.content.startswith('$help'): 
-        await message.channel.send(
-            """
+@bot.command()
+async def reset(ctx):
+    """Reset the deck, replacing all cards and clearing discards."""   
+    deck.reset()
+    await ctx.send('All cards are back in the deck.')
 
-            tarotbot: A simple Discord bot for drawing cards from a tarot deck.
+@bot.command()
+async def list_discards(ctx):
+    """Lists the names of every card in the discard deck."""
+    await ctx.send(deck.list_discards())
 
-            The following commands are supported:
-            * `$draw` - Draw a single card from the deck, without replacement.
-            * `$reset` - Reset the deck, replacing all cards and clearing discards.
-            * `$remaining` - Print the number of cards left in the deck.
-            * `$list_discards` - Lists the names of every card in the discard deck.
-            * `$return {n}` - Return the {n}th card in the discard deck to the main deck, so that it may be drawn again.
-                Note that {n} refers to the position of the card as in `$list_discards` and that it is zero indexed. 
-            * `$help` - print this help message.
-            """
-        )
+@bot.command()
+async def return_card(ctx, n: int):
+    """
+    Return the {n}th card in the discard deck to the main deck, so that it may be drawn again.
+    Note that {n} refers to the position of the card as in `$list_discards` and that it is zero indexed. 
+    """
+    deck.return_card(n)
+    await ctx.send("Card returned!")
 
-
-client.run(token)
+bot.run(token)
