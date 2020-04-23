@@ -1,3 +1,6 @@
+from os import chdir
+from sys import path
+
 import cards
 
 import discord
@@ -7,6 +10,7 @@ client = discord.Client()
 deck = cards.Deck(cards.tarot_deck)
 
 #Import discord token from '.token'
+chdir(path[0]) # ensure we are loading files from the directory this file is in
 f = open('.token', 'r')
 token = f.read()
 print(f'Using token "{token}"')
@@ -31,6 +35,9 @@ async def on_message(message):
             await message.channel.send(f'You drew {drawn_card.name}.', file=discord.File(f'img/{drawn_card.img_name}'))
         except IndexError:
             await message.channel.send('Deck is out of cards!')
+        except FileNotFoundError:
+            await message.channel.send(f'You drew {drawn_card.name}, but I wasn\'t able to load and image!')
+
 
     if message.content.startswith('$remains'):
         await message.channel.send(f'There are {len(deck)} cards remaining.')
