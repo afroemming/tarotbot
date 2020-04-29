@@ -34,7 +34,7 @@ async def hello(ctx):
 async def draw(ctx):
     """Draw a single card from the deck, without replacement."""
     try:
-        drawn_card = deck.draw()
+        drawn_card = deck.draw()[0]
         await ctx.send(f'You drew {drawn_card.name}.', file=discord.File(f'img/{drawn_card.img_name}'))
     except IndexError:
         await ctx.send('Deck is out of cards!')

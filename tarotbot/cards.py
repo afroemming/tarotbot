@@ -18,11 +18,15 @@ class Deck:
     def remaining(self):
         return len(self.curr_deck)
 
-    def draw(self):
-        self.drawn = choice(self.curr_deck)
-        self.curr_deck.remove(self.drawn)
-        self.discards.append(self.drawn)
-        return self.drawn
+    def draw(self, n=1) -> list:
+        """Return a list of n card objects chosen and removed from the deck"""
+        self.drawn_list = []
+        for i in range(n):
+            self.drawn = choice(self.curr_deck)
+            self.drawn_list.append(self.drawn)
+            self.curr_deck.remove(self.drawn)
+            self.discards.append(self.drawn)
+        return self.drawn_list
 
     def reset(self):
         self.curr_deck = deepcopy(self.base_deck)
