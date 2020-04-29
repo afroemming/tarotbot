@@ -58,8 +58,8 @@ async def list_discards(ctx):
     await ctx.send(deck.list_discards())
 
 
-@bot.command()
-async def return_card(ctx, n: int):
+@bot.command(name='return')
+async def _return(ctx, n: int):
     """
     Returns a card in the discard deck to the main deck, so that it may be drawn again.
 
