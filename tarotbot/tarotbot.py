@@ -72,8 +72,8 @@ async def _return(ctx, n: int):
     except IndexError:
         await ctx.send("Error: Invalid index!")
 
-@return_card.error
-async def return_card_error(ctx, error):
+@_return.error
+async def _return_error(ctx, error):
     if isinstance(error, (commands.errors.BadArgument)):
         await ctx.send("Error parsing argument! Did you supply an int?")
     elif isinstance(error, (commands.errors.MissingRequiredArgument)):
