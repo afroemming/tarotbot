@@ -27,6 +27,32 @@ async def on_ready():
 
 
 @bot.command()
+async def muteall(ctx):
+    """Mute all users in the channel that the user issuing this command is in"""
+    if ctx.author.voice and ctx.author.voice.channel:
+        channel = ctx.author.voice.channel
+    else:
+        await ctx.send("You are not connected to a voice channel")
+        return
+
+    members = channel.members 
+    for m in members:
+        await m.edit(mute=True)
+
+@bot.command()
+async def unmuteall(ctx):
+    """Unmute all users in the channel that the user issuing this command is in"""
+    if ctx.author.voice and ctx.author.voice.channel:
+        channel = ctx.author.voice.channel
+    else:
+        await ctx.send("You are not connected to a voice channel")
+        return
+
+    members = channel.members 
+    for m in members:
+        await m.edit(mute=False)
+
+@bot.command()
 async def hello(ctx):
     await ctx.send('Hello!')
 
